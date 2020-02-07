@@ -15,7 +15,18 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+
+		// getBytes() method to convert string into bytes[].
+		byte[] result = null;
+		if (!(string == null)) {
+			byte[] strAsByteArray = string.getBytes();
+			result = new byte[strAsByteArray.length];
+			// Store result in reverse order into the result byte[]
+			for (int i = 0; i < strAsByteArray.length; i++)
+				result[i] = strAsByteArray[strAsByteArray.length - i - 1];
+		}
+
+		return new String(result);
 	}
 
 	/**
@@ -28,7 +39,18 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String[] inputString = phrase.split("[\\s\\-]");
+		//String[] inputString = phrase.split("[\\s\\-\\.\\'\\?\\,\\_\\@]+\"");
+		
+		String acronym="";
+		for (int i = 0; i < inputString.length; i++) {
+			//Portable Network Graphics to its acronym
+			String str = inputString[i];
+			String firstletter = str.substring(0,1).toUpperCase();
+			acronym = (new StringBuilder().append(acronym).append(firstletter)).toString();
+		}
+		
+		return acronym;
 	}
 
 	/**
