@@ -1,6 +1,12 @@
 package com.revature.eval.java.core;
 
+import static java.lang.Character.isLowerCase;
+import static java.lang.Character.isUpperCase;
+
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +20,6 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
-		// TODO Write an implementation for this method declaration
 
 		// getBytes() method to convert string into bytes[].
 		byte[] result = null;
@@ -38,18 +43,17 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
 		String[] inputString = phrase.split("[\\s\\-]");
-		//String[] inputString = phrase.split("[\\s\\-\\.\\'\\?\\,\\_\\@]+\"");
-		
-		String acronym="";
+		// String[] inputString = phrase.split("[\\s\\-\\.\\'\\?\\,\\_\\@]+\"");
+
+		String acronym = "";
 		for (int i = 0; i < inputString.length; i++) {
-			//Portable Network Graphics to its acronym
+			// Portable Network Graphics to its acronym
 			String str = inputString[i];
-			String firstletter = str.substring(0,1).toUpperCase();
+			String firstletter = str.substring(0, 1).toUpperCase();
 			acronym = (new StringBuilder().append(acronym).append(firstletter)).toString();
 		}
-		
+
 		return acronym;
 	}
 
@@ -103,17 +107,23 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
+			if (sideOne == sideTwo && sideTwo == sideThree) {
+				return true;
+			}
 			return false;
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
+			if (sideOne == sideTwo || sideTwo == sideThree || sideOne == sideThree) {
+				return true;
+			}
 			return false;
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
+			if (sideOne != sideTwo && sideTwo != sideThree && sideOne != sideThree) {
+				return true;
+			}
 			return false;
 		}
 
@@ -134,9 +144,25 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+
+	/*
+	 * Table of key and values ------------------------ Letter Value A, E, I, O, U,
+	 * L, N, R, S, T 1 D, G 2 B, C, M, P 3 F, H, V, W, Y 4 K 5 J, X 8 Q, Z 10
+	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int scores[] = { 1, 2, 3, 4, 5, 8, 10 };
+		String letters[] = { "AEIOULNRST", "DG", "BCMP", "FHVWY", "K", "JX", "QZ" };
+		int sum = 0;
+		String stringUpper = string.toUpperCase();
+
+		for (int i = 0; i < stringUpper.length(); i++) {
+			for (int j = 0; j < letters.length; j++) {
+				if (letters[j].contains("" + stringUpper.charAt(i))) {
+					sum += scores[j];
+				}
+			}
+		}
+		return sum;
 	}
 
 	/**
@@ -150,9 +176,7 @@ public class EvaluationService {
 	 * Area code, commonly known as area code, followed by a seven-digit local
 	 * number. The first three digits of the local number represent the exchange
 	 * code, followed by the unique four-digit number which is the subscriber
-	 * number.
-	 * 
-	 * The format is usually represented as
+	 * number. ` The format is usually represented as
 	 * 
 	 * 1 (NXX)-NXX-XXXX where N is any digit from 2 through 9 and X is any digit
 	 * from 0 through 9.
@@ -171,8 +195,19 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		// removing spaces and extra characters
+		String retval = string.replaceAll("[()-.\\D]", "");
+		// validating if number is 10 digits if not throw exception
+		if ((retval.length() != 10) || (retval.length() < 10)) {
+			throw new IllegalArgumentException(string);
+		} else {
+			// If there is an area code remove it
+			while (retval.length() > 10) {
+				retval.replaceFirst("\\d", "");
+			}
+
+		}
+		return retval;
 	}
 
 	/**
@@ -185,8 +220,18 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		Map<String, Integer> countingWords = new HashMap<String, Integer>();
+		string = string.replace(",", " ");
+		string = string.replace("\n", "");
+		for (String word : string.split(" |\\,|\\[\\n]")) {
+			if (countingWords.containsKey(word)) {
+				int count = countingWords.get(word);
+				countingWords.put(word, ++count);
+			} else {
+				countingWords.put(word, 1);
+			}
+		}
+		return countingWords;
 	}
 
 	/**
@@ -228,8 +273,52 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			int startIdx = 0;
+			int endIdx = sortedList.size() - 1;
+			String[] origStringList = null;
+			Integer[] origNumberList = null;
+
+			int mid = (startIdx + endIdx) / 2;
+
+			// There may be a better way to dynamically create the array based on
+			// type of the object added to the array
+			if (t instanceof String) {
+				origStringList = (String[]) (sortedList).toArray();
+				while (startIdx <= endIdx) {
+
+					int res = ((String) t).compareTo(origStringList[mid]);
+					// Check if search string is present in the middle return index of the middle
+					// string
+					if (res == 0)
+						return mid;
+					else if (res > 0) {// Means the search string is in the 2nd half of the array. Reset the start idx
+						startIdx = mid + 1;
+
+					} else {
+						endIdx = mid - 1;// Means the search strings in the first half of the array. Reset the end index
+					}
+					mid = (startIdx + endIdx) / 2;// Reset the mid to the first of 2nd half of the array
+					// Continue searching with new startidx,endidx and mid
+				}
+
+			}
+			if (t instanceof Number) {
+				origNumberList = (Integer[]) (sortedList).toArray();
+				while (startIdx <= endIdx) {
+					if (origNumberList[mid] == (Integer) t) {
+						return mid;
+					} else if (origNumberList[mid] < (Integer) t) {
+						startIdx = mid + 1;
+					} else {
+						endIdx = mid - 1;
+					}
+					mid = (startIdx + endIdx) / 2;
+				}
+
+			}
+
+			return -1;
+
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -285,8 +374,21 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		String inputAsString = input + "";
+		int numberOfDigits = inputAsString.length();
+		int copyOfInput = input;
+		int sum = 0;
+		while (copyOfInput != 0) {
+			int lastDigit = copyOfInput % 10;
+			sum = sum + (int) Math.pow(lastDigit, numberOfDigits);
+			copyOfInput = copyOfInput / 10;
+		}
+		if (sum == input) {
+			return true;
+		} else {
+			return false;
+
+		}
 	}
 
 	/**
@@ -299,9 +401,79 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
-	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+	public List<Long> calculatePrimeFactorsOf(long number) {
+		ArrayList<Long> primeNumbers = new ArrayList<Long>(
+				Arrays.asList(1L, 2L, 3L, 5L, 7L, 11L, 13L, 17L, 19L, 23L, 461L));
+
+		List<Long> primeFactors = new ArrayList<Long>();
+
+//		do {
+//			if (number % 2 == 0) {// even
+//				number = number / 2;
+//				primeFactors.add(new Long(2L));
+//			} else {
+//
+//				if (number % 3 == 0) {
+//					number = number / 3;
+//					primeFactors.add(new Long(3L));
+//
+//				}
+//
+//				if (number % 5 == 0) {
+//					number = number / 5;
+//					primeFactors.add(new Long(5L));
+//
+//				}
+//				if (number % 7 == 0) {
+//					number = number / 7;
+//					primeFactors.add(new Long(7L));
+//
+//				}
+//				if (number % 11 == 0) {
+//					number = number / 11;
+//					primeFactors.add(new Long(11L));
+//
+//				}
+//				
+//				if (number % 17 == 0) {
+//					number = number / 17;
+//					primeFactors.add(new Long(17L));
+//
+//				}
+//				
+//				if (number % 23 == 0) {
+//					number = number / 23;
+//					primeFactors.add(new Long(23L));
+//
+//				}
+//				
+//				if (number % 461 == 0) {
+//					number = number / 461;
+//					primeFactors.add(new Long(461L));
+//
+//				}
+//				
+//			}
+//			
+//			//If the 1st factor is prime just add it
+//			if (primeNumbers.contains(number) && (number != 1)) {
+//				primeFactors.add(new Long(number));
+//			}
+//
+//		} while (!primeNumbers.contains(number));
+
+		for (int i = 2; i < number; i++) {
+			while (number % i == 0) {
+				primeFactors.add(new Long(i));
+				number = number / i;
+			}
+		}
+		if (number >= 2) {
+			primeFactors.add(new Long(number));
+		}
+
+		return primeFactors;
+
 	}
 
 	/**
@@ -331,6 +503,7 @@ public class EvaluationService {
 	 * quick brown fox jumps over the lazy dog.
 	 */
 	static class RotationalCipher {
+		private static final int ALPHABET_SIZE = 26;
 		private int key;
 
 		public RotationalCipher(int key) {
@@ -338,9 +511,28 @@ public class EvaluationService {
 			this.key = key;
 		}
 
-		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+		public String rotate(String message) {
+			key %= ALPHABET_SIZE;
+			char[] chars = message.toCharArray();
+			for (int i = 0; i < chars.length; ++i) {
+				if (isLowerCase(chars[i])) {
+					chars[i] = rotateChar(chars[i], key, 'a', 'z');
+				} else if (isUpperCase(chars[i])) {
+					chars[i] = rotateChar(chars[i], key, 'A', 'Z');
+				}
+			}
+			return new String(chars);
+		}
+
+		private static char rotateChar(char c, int rotateBy, char firstChar, char lastChar) {
+			c += rotateBy;
+			if (c < firstChar) {
+				return (char) (c + ALPHABET_SIZE);
+			}
+			if (c > lastChar) {
+				return (char) (c - ALPHABET_SIZE);
+			}
+			return c;
 		}
 
 	}
@@ -357,9 +549,30 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
-	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+	public int calculateNthPrime(int nthPosition) {
+		// Throw exception if the position is zero
+		if (nthPosition == 0)
+			throw new IllegalArgumentException();
+		//Define local variables for counters
+		int nthPrime, count, i;
+		nthPrime = 1;
+		count = 0;
+		//Identify prime until the nth position is reached 
+		while (count < nthPosition) {
+			nthPrime = nthPrime + 1;
+			// Loop through from 2 to nthprime
+			for (i = 2; i <= nthPrime; i++) { 
+				if (nthPrime % i == 0) {
+					break;
+				}
+			}
+			// Increment count if it is a prime number
+			if (i == nthPrime) {
+				count = count + 1;
+			}
+		}
+
+		return nthPrime;
 	}
 
 	/**
@@ -394,9 +607,37 @@ public class EvaluationService {
 		 * @param string
 		 * @return
 		 */
-		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+		public static String encode(String paramPlainText) {
+			String cipherText = "";
+			String cleanPlainText = "";
+
+			for (char c : paramPlainText.toLowerCase().toCharArray()) {
+				if (Character.isLetterOrDigit(c)) {
+					cleanPlainText += c;
+				}
+			}
+
+			char[] alphabetsArray = new String("abcdefghijklmnopqrstuvwxyz").toCharArray();
+			// Build a Hashmap to store key value pairs for alphabet reverse order A ->Z ,
+			// B->Y etc.,
+			// ABCDEFGHIJKLMNOPQRSTUVWXYZ
+			// ZYXWVUTSRQPONMLKJIHGFEDCBA
+			HashMap<String, String> hmap = new HashMap<String, String>();
+			for (int i = 0; i < alphabetsArray.length; i++) {
+				hmap.put(String.valueOf(alphabetsArray[i]),
+						String.valueOf(alphabetsArray[alphabetsArray.length - (i + 1)]));
+			}
+			// Loop through each char, check if it is char and get mapping char from hashmap
+			for (int i = 0; i < cleanPlainText.length(); i++) {
+				char c = cleanPlainText.substring(i, i + 1).charAt(0);
+				if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+					cipherText += hmap.get(String.valueOf(c).toLowerCase());
+				} else {
+					cipherText += String.valueOf(c);
+				}
+			}
+
+			return parseString(cipherText).trim();
 		}
 
 		/**
@@ -405,10 +646,51 @@ public class EvaluationService {
 		 * @param string
 		 * @return
 		 */
-		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+		public static String decode(String paramCipherText) {
+			String plainText = "";
+			String cleanCipherText = "";
+
+			for (char c : paramCipherText.toLowerCase().toCharArray()) {
+				if (Character.isLetterOrDigit(c)) {
+					cleanCipherText += c;
+				}
+			}
+
+			char[] alphabetsArray = new String("abcdefghijklmnopqrstuvwxyz").toCharArray();
+			// Build a Hashmap to store key value pairs for alphabet reverse order A ->Z ,
+			// B->Y etc.,
+			// ABCDEFGHIJKLMNOPQRSTUVWXYZ
+			// ZYXWVUTSRQPONMLKJIHGFEDCBA
+			HashMap<String, String> hmap = new HashMap<String, String>();
+			for (int i = 0; i < alphabetsArray.length; i++) {
+				hmap.put(String.valueOf(alphabetsArray[i]),
+						String.valueOf(alphabetsArray[alphabetsArray.length - (i + 1)]));
+			}
+			// Loop through each char, check if it is char and get mapping char from hashmap
+			for (int i = 0; i < cleanCipherText.length(); i++) {
+				char c = cleanCipherText.substring(i, i + 1).charAt(0);
+				if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+					plainText += hmap.get(String.valueOf(c).toLowerCase());
+				} else {
+					plainText += String.valueOf(c);
+				}
+			}
+
+			return (plainText).trim();
 		}
+
+		private static String parseString(String input) {
+			String out = "";
+			for (int i = 0; i < input.length(); i += 5) {
+				if (i + 5 <= input.length()) {
+					out += (input.substring(i, i + 5) + " ");
+				} else {
+					out += (input.substring(i) + " ");
+				}
+			}
+			return out;
+		}
+
 	}
 
 	/**
@@ -452,8 +734,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		boolean[] alphaList = new boolean[26];
+		int index = 0;
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) >= 'A' && string.charAt(i) <= 'Z') {
+				index = string.charAt(i) - 'A';
+			} else if (string.charAt(i) >= 'a' && string.charAt(i) <= 'z') {
+				index = string.charAt(i) - 'a';
+			}
+			alphaList[index] = true;
+		}
+		for (int i = 0; i <= 25; i++) {
+			if (alphaList[i] == false) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -465,7 +761,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
+
 		return null;
 	}
 
@@ -556,7 +852,28 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
+		// Taking a word problem and parsing the operation needed to be performed
+		String[] parsedNumber = string.split(" ");
+		// Declaring a variable for the first number passed in the word problem to be
+		// used to compute the operation declared.
+		Integer firstNum = Integer.parseInt(parsedNumber[2]);
+		String lastItem = parsedNumber[parsedNumber.length - 1];
+		String trimedLastItem = lastItem.substring(0, lastItem.length() - 1);
+		// Declaring a variable for the seconds number passed in the word problem to be
+		// used to compute the operation declared.
+
+		Integer secondNum = Integer.parseInt(trimedLastItem);
+
+		switch (parsedNumber[3]) {
+		case "plus":
+			return (int) firstNum + secondNum;
+		case "minus":
+			return (int) firstNum - secondNum;
+		case "multiplied":
+			return (int) firstNum * secondNum;
+		case "divided":
+			return (int) firstNum / secondNum;
+		}
 		return 0;
 	}
 
