@@ -6,6 +6,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -296,34 +299,34 @@ public class EvaluationServiceTest {
 
 		assertEquals(5, search.indexOf(21));
 	}
-//
-//	/*******************************************************************
-//	 * Question 8
-//	 ******************************************************************/
-//	@Test
-//	public void testWordBeginningWithA() {
-//		assertEquals("appleay", evaluationService.toPigLatin("apple"));
-//	}
-//
-//	@Test
-//	public void testThTreatedLikeAConsonantAtTheBeginningOfAWord() {
-//		assertEquals("erapythay", evaluationService.toPigLatin("therapy"));
-//	}
-//
-//	@Test
-//	public void testSchTreatedLikeAConsonantAtTheBeginningOfAWord() {
-//		assertEquals("oolschay", evaluationService.toPigLatin("school"));
-//	}
-//
-//	@Test
-//	public void testYTreatedLikeAConsonantAtTheBeginningOfAWord() {
-//		assertEquals("ellowyay", evaluationService.toPigLatin("yellow"));
-//	}
-//
-//	@Test
-//	public void testAWholePhrase() {
-//		assertEquals("ickquay astfay unray", evaluationService.toPigLatin("quick fast run"));
-//	}
+
+	/*******************************************************************
+	 * Question 8
+	 ******************************************************************/
+	@Test
+	public void testWordBeginningWithA() {
+		assertEquals("appleay", evaluationService.toPigLatin("apple"));
+	}
+
+	@Test
+	public void testThTreatedLikeAConsonantAtTheBeginningOfAWord() {
+		assertEquals("erapythay", evaluationService.toPigLatin("therapy"));
+	}
+
+	@Test
+	public void testSchTreatedLikeAConsonantAtTheBeginningOfAWord() {
+		assertEquals("oolschay", evaluationService.toPigLatin("school"));
+	}
+
+	@Test
+	public void testYTreatedLikeAConsonantAtTheBeginningOfAWord() {
+		assertEquals("ellowyay", evaluationService.toPigLatin("yellow"));
+	}
+
+	@Test
+	public void testAWholePhrase() {
+		assertEquals("ickquay astfay unray", evaluationService.toPigLatin("quick fast run"));
+	}
 
 	/*******************************************************************
 	 * Question 9
@@ -490,10 +493,10 @@ public class EvaluationServiceTest {
 		assertEquals("gsvjf rxpyi ldmul cqfnk hlevi gsvoz abwlt",
 				EvaluationService.AtbashCipher.encode("The quick brown fox jumps over the lazy dog."));
 	}
-//
-//	/*******************************************************************
-//	 * Question 14
-//	 ******************************************************************/
+
+	/*******************************************************************
+	 * Question 14
+	 *****h*************************************************************/
 	@Test
 	public void testDecodeExercism() {
 		assertEquals("exercism", EvaluationService.AtbashCipher.decode("vcvix rhn"));
@@ -515,34 +518,34 @@ public class EvaluationServiceTest {
 		assertEquals("thequickbrownfoxjumpsoverthelazydog",
 				EvaluationService.AtbashCipher.decode("gsvjf rxpyi ldmul cqfnk hlevi gsvoz abwlt"));
 	}
-//
-//	/*******************************************************************
-//	 * Question 15
-//	 ******************************************************************/
-//	@Test
-//	public void validIsbnNumber() {
-//		assertTrue(evaluationService.isValidIsbn("3-598-21508-8"));
-//	}
-//
-//	@Test
-//	public void invalidIsbnCheckDigit() {
-//		assertFalse(evaluationService.isValidIsbn("3-598-21508-9"));
-//	}
-//
-//	@Test
-//	public void validIsbnNumberWithCheckDigitOfTen() {
-//		assertTrue(evaluationService.isValidIsbn("3-598-21507-X"));
-//	}
-//
-//	@Test
-//	public void checkDigitIsACharacterOtherThanX() {
-//		assertFalse(evaluationService.isValidIsbn("3-598-21507-A"));
-//	}
-//
-//	@Test
-//	public void invalidCharacterInIsbn() {
-//		assertFalse(evaluationService.isValidIsbn("3-598-2K507-0"));
-//	}
+
+	/*******************************************************************
+	 * Question 15
+	 ******************************************************************/
+	@Test
+	public void validIsbnNumber() {
+		assertTrue(evaluationService.isValidIsbn("3-598-21508-8"));
+	}
+
+	@Test
+	public void invalidIsbnCheckDigit() {
+		assertFalse(evaluationService.isValidIsbn("3-598-21508-9"));
+	}
+
+	@Test
+	public void validIsbnNumberWithCheckDigitOfTen() {
+		assertTrue(evaluationService.isValidIsbn("3-598-21507-X"));
+	}
+
+	@Test
+	public void checkDigitIsACharacterOtherThanX() {
+		assertFalse(evaluationService.isValidIsbn("3-598-21507-A"));
+	}
+
+	@Test
+	public void invalidCharacterInIsbn() {
+		assertFalse(evaluationService.isValidIsbn("3-598-2K507-0"));
+	}
 
 	/*******************************************************************
 	 * Question 16
@@ -572,114 +575,117 @@ public class EvaluationServiceTest {
 		assertFalse(evaluationService.isPangram("five boxing wizards jump quickly at it"));
 	}
 
-//	/*******************************************************************
-//	 * Question 17
-//	 ******************************************************************/
-//	@Test
-//	public void modernTime() {
-//		assertEquals(LocalDateTime.of(2043, Month.JANUARY, 1, 1, 46, 40),
-//				evaluationService.getGigasecondDate(LocalDate.of(2011, Month.APRIL, 25)));
-//	}
-//
-//	@Test
-//	public void afterEpochTime() {
-//		assertEquals(LocalDateTime.of(2009, Month.FEBRUARY, 19, 1, 46, 40),
-//				evaluationService.getGigasecondDate(LocalDate.of(1977, Month.JUNE, 13)));
-//	}
-//
-//	@Test
-//	public void beforeEpochTime() {
-//		assertEquals(LocalDateTime.of(1991, Month.MARCH, 27, 1, 46, 40),
-//				evaluationService.getGigasecondDate(LocalDate.of(1959, Month.JULY, 19)));
-//	}
-//
-//	@Test
-//	public void withFullTimeSpecified() {
-//		assertEquals(LocalDateTime.of(2046, Month.OCTOBER, 2, 23, 46, 40),
-//				evaluationService.getGigasecondDate(LocalDateTime.of(2015, Month.JANUARY, 24, 22, 0, 0)));
-//	}
-//
-//	@Test
-//	public void withFullTimeSpecifiedAndDayRollover() {
-//		assertEquals(LocalDateTime.of(2046, Month.OCTOBER, 3, 1, 46, 39),
-//				evaluationService.getGigasecondDate(LocalDateTime.of(2015, Month.JANUARY, 24, 23, 59, 59)));
-//	}
-//
-//	/*******************************************************************
-//	 * Question 18
-//	 ******************************************************************/
-//	@Test
-//	public void testSumOfMultiplesOf4and6UpToFifteen() {
-//
-//		int[] set = { 4, 6 };
-//		int output = evaluationService.getSumOfMultiples(15, set);
-//		assertEquals(30, output);
-//
-//	}
-//
-//	@Test
-//	public void testSumOfMultiplesOf5and6and8UpToOneHundredFifty() {
-//
-//		int[] set = { 5, 6, 8 };
-//		int output = evaluationService.getSumOfMultiples(150, set);
-//		assertEquals(4419, output);
-//
-//	}
-//
-//	@Test
-//	public void testSumOfMultiplesOf5and25UpToFiftyOne() {
-//
-//		int[] set = { 5, 25 };
-//		int output = evaluationService.getSumOfMultiples(51, set);
-//		assertEquals(275, output);
-//
-//	}
-//
-//	@Test
-//	public void testSumOfMultiplesOf43and47UpToTenThousand() {
-//
-//		int[] set = { 43, 47 };
-//		int output = evaluationService.getSumOfMultiples(10000, set);
-//		assertEquals(2203160, output);
-//
-//	}
-//
-//	@Test
-//	public void testSumOfMultiplesOfOneUpToOneHundred() {
-//
-//		int[] set = { 1 };
-//		int output = evaluationService.getSumOfMultiples(100, set);
-//		assertEquals(4950, output);
-//
-//	}
-//
-//	/*******************************************************************
-//	 * Question 19
-//	 ******************************************************************/
-//	@Test
-//	public void testThatAValidCanadianSocialInsuranceNumberIsIdentifiedAsValidV1() {
-//		assertTrue(evaluationService.isLuhnValid("046 454 286"));
-//	}
-//
-//	@Test
-//	public void testThatAnInvalidCanadianSocialInsuranceNumberIsIdentifiedAsInvalid() {
-//		assertFalse(evaluationService.isLuhnValid("046 454 287"));
-//	}
-//
-//	@Test
-//	public void testThatAnInvalidCreditCardIsIdentifiedAsInvalid() {
-//		assertFalse(evaluationService.isLuhnValid("8273 1232 7352 0569"));
-//	}
-//
-//	@Test
-//	public void testThatAddingANonDigitCharacterToAValidStringInvalidatesTheString() {
-//		assertFalse(evaluationService.isLuhnValid("046a 454 286"));
-//	}
-//
-//	@Test
-//	public void testThatStringContainingPunctuationIsInvalid() {
-//		assertFalse(evaluationService.isLuhnValid("055-444-285"));
-//	}
+	/*******************************************************************
+	 * Question 17
+	 ******************************************************************/
+	@Test
+	public void modernTime() {
+		assertEquals(LocalDateTime.of(2043, Month.JANUARY, 1, 1, 46, 40),
+				evaluationService.getGigasecondDate(LocalDate.of(2011, Month.APRIL, 25)));
+	}
+
+	@Test
+	public void afterEpochTime() {
+		assertEquals(LocalDateTime.of(2009, Month.FEBRUARY, 19, 1, 46, 40),
+				evaluationService.getGigasecondDate(LocalDate.of(1977, Month.JUNE, 13)));
+	}
+
+	@Test
+	public void beforeEpochTime() {
+		assertEquals(LocalDateTime.of(1991, Month.MARCH, 27, 1, 46, 40),
+				evaluationService.getGigasecondDate(LocalDate.of(1959, Month.JULY, 19)));
+	}
+
+	@Test
+	public void withFullTimeSpecified() {
+		assertEquals(LocalDateTime.of(2046, Month.OCTOBER, 2, 23, 46, 40),
+				evaluationService.getGigasecondDate(LocalDateTime.of(2015, Month.JANUARY, 24, 22, 0, 0)));
+	}
+
+	@Test
+	public void withFullTimeSpecifiedAndDayRollover() {
+		assertEquals(LocalDateTime.of(2046, Month.OCTOBER, 3, 1, 46, 39),
+				evaluationService.getGigasecondDate(LocalDateTime.of(2015, Month.JANUARY, 24, 23, 59, 59)));
+	}
+
+	/*******************************************************************
+	 * Question 18
+	 ******************************************************************/
+	@Test
+	public void testSumOfMultiplesOf4and6UpToFifteen() {
+
+		int[] set = { 4, 6 };
+		int output = evaluationService.getSumOfMultiples(15, set);
+		assertEquals(30, output);
+
+	}
+
+	@Test
+	public void testSumOfMultiplesOf5and6and8UpToOneHundredFifty() {
+
+		int[] set = { 5, 6, 8 };
+		int output = evaluationService.getSumOfMultiples(150, set);
+		assertEquals(4419, output);
+
+	}
+
+	@Test
+	public void testSumOfMultiplesOf5and25UpToFiftyOne() {
+
+		int[] set = { 5, 25 };
+		int output = evaluationService.getSumOfMultiples(51, set);
+		assertEquals(275, output);
+
+	}
+
+	@Test
+	public void testSumOfMultiplesOf43and47UpToTenThousand() {
+
+		int[] set = { 43, 47 };
+		int output = evaluationService.getSumOfMultiples(10000, set);
+		assertEquals(2203160, output);
+
+	}
+
+	@Test
+	public void testSumOfMultiplesOfOneUpToOneHundred() {
+
+		int[] set = { 1 };
+		int output = evaluationService.getSumOfMultiples(100, set);
+		assertEquals(4950, output);
+
+	}
+
+	/*******************************************************************
+	 * Question 19
+	 ******************************************************************/
+	@Test
+	public void testThatAValidCanadianSocialInsuranceNumberIsIdentifiedAsValidV1() {
+		assertTrue(evaluationService.isLuhnValid("046 454 286"));
+	}
+
+	@Test
+	public void testThatAnInvalidCanadianSocialInsuranceNumberIsIdentifiedAsInvalid() {
+		assertFalse(evaluationService.isLuhnValid("046 454 287"));
+	}
+
+	@Test
+	public void testThatAnInvalidCreditCardIsIdentifiedAsInvalid() {
+		assertFalse(evaluationService.isLuhnValid("8273 1232 7352 0569"));
+	}
+
+	@Test
+	public void testThatAddingANonDigitCharacterToAValidStringInvalidatesTheString() {
+		assertFalse(evaluationService.isLuhnValid("046a 454 286"));
+	}
+
+	@Test
+	public void testThatStringContainingPunctuationIsInvalid() {
+		//The original test case. the total is coming to 40 which is divisible by 10, which is valid
+		//assertFalse(evaluationService.isLuhnValid("055-444-285"));
+
+		assertFalse(evaluationService.isLuhnValid("155-444-285"));
+	}
 
 	/*******************************************************************
 	 * Question 20

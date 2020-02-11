@@ -3,14 +3,23 @@ package com.revature.eval.java.core;
 import static java.lang.Character.isLowerCase;
 import static java.lang.Character.isUpperCase;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EvaluationService {
+
+	private static final int[] digits = null;
 
 	/**
 	 * 1. Without using the StringBuilder or StringBuffer class, write a method that
@@ -353,9 +362,31 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+
+	/**
+	 * Method to translate a sentence word by word.
+	 * 
+	 * @param s The sentence in English
+	 * @return The pig latin version
+	 */
+	public String toPigLatin(String s) {
+		Pattern vowel = Pattern.compile("^([aeiou]|y[^aeiou]|xr)");
+		Pattern consone = Pattern.compile("^([^aeiou]?qu|[^aeiouy]+|y(?=[aeiou]))");
+
+		String res = "";
+
+		for (String word : s.split(" ")) {
+			if (vowel.matcher(word).find())
+				res += word;
+			else {
+				Matcher z = consone.matcher(word);
+				if (z.find())
+					res += word.substring(z.end()) + z.group();
+			}
+			res += "ay ";
+		}
+
+		return res.substring(0, res.length() - 1);
 	}
 
 	/**
@@ -553,15 +584,15 @@ public class EvaluationService {
 		// Throw exception if the position is zero
 		if (nthPosition == 0)
 			throw new IllegalArgumentException();
-		//Define local variables for counters
+		// Define local variables for counters
 		int nthPrime, count, i;
 		nthPrime = 1;
 		count = 0;
-		//Identify prime until the nth position is reached 
+		// Identify prime until the nth position is reached
 		while (count < nthPosition) {
 			nthPrime = nthPrime + 1;
 			// Loop through from 2 to nthprime
-			for (i = 2; i <= nthPrime; i++) { 
+			for (i = 2; i <= nthPrime; i++) {
 				if (nthPrime % i == 0) {
 					break;
 				}
@@ -715,9 +746,38 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+	public boolean isValidIsbn(String isbn) {
+
+		if (isbn == null) {
+			return false;
+		}
+
+		// remove any hyphens
+		isbn = isbn.replaceAll("-", "");
+
+		// must be a 10 digit ISBN
+		if (isbn.length() != 10) {
+			return false;
+		}
+
+		try {
+			int tot = 0;
+			for (int i = 0; i < 9; i++) {
+				int digit = Integer.parseInt(isbn.substring(i, i + 1));
+				tot += ((10 - i) * digit);
+			}
+
+			String checksum = Integer.toString((11 - (tot % 11)) % 11);
+			if ("10".equals(checksum)) {
+				checksum = "X";
+			}
+
+			return checksum.equals(isbn.substring(9));
+		} catch (NumberFormatException nfe) {
+			// to catch invalid ISBNs that have non-numeric characters in them
+			return false;
+		}
+
 	}
 
 	/**
@@ -761,8 +821,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-
-		return null;
+		final long GIGASECOND = 1000000000;
+		LocalDateTime beginning = null;
+		if (given instanceof LocalDateTime) {
+			return given.plus(GIGASECOND, ChronoUnit.SECONDS);
+		} else {
+			LocalDate give = (LocalDate) given;
+			beginning = give.atStartOfDay();
+			return beginning.plus(GIGASECOND, ChronoUnit.SECONDS);
+		}
 	}
 
 	/**
@@ -779,8 +846,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		HashSet<Integer> multiples = new HashSet<Integer>();
+		int result = 0;
+		for (int k = 1; k < i; k++) {
+			for (int num : set) {
+				if (k % num == 0) {
+					multiples.add(k);
+				}
+			}
+		}
+		for (int num : multiples) {
+			result += num;
+		}
+		return result;
 	}
 
 	/**
@@ -819,9 +897,31 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+	public boolean isLuhnValid(String paramStr) {
+		String str = paramStr.replaceAll(" ", "");
+		str = str.replaceAll("-", "");
+		int[] ints = new int[str.length()];
+		try {
+			for (int i = 0; i < str.length(); i++) {
+				ints[i] = Integer.parseInt(str.substring(i, i + 1));
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+		for (int i = ints.length - 2; i >= 0; i = i - 2) {
+			int j = ints[i];
+			j = j * 2;
+			if (j > 9) {
+				j = j % 10 + 1;
+			}
+			ints[i] = j;
+		}
+		int sum = 0;
+		for (int i = 0; i < ints.length; i++) {
+			sum += ints[i];
+		}
+		return (sum % 10 == 0);
 	}
 
 	/**
